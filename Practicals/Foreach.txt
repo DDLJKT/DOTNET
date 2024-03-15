@@ -1,0 +1,15 @@
+using System;
+
+class Program
+{
+    static void Main()
+    {
+        string myString = "Hello, C#";
+
+        // Using for..each loop to iterate through characters in a string
+        foreach (char c in myString)
+        {
+            Console.WriteLine(c);
+        }
+    }
+}

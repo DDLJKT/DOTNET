@@ -1,0 +1,25 @@
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Home.aspx.cs" Inherits="BankWebsite.Home" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title>Bank Website - Home</title>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <div>
+            <h2>Welcome to our Bank!</h2>
+            <!-- Navigation Menu -->
+            <asp:Menu ID="MainMenu" runat="server">
+                <Items>
+                    <asp:MenuItem Text="Home" NavigateUrl="~/Home.aspx" />
+                    <asp:MenuItem Text="Accounts" NavigateUrl="~/Accounts.aspx" />
+                    <asp:MenuItem Text="Transactions" NavigateUrl="~/Transactions.aspx" />
+                </Items>
+            </asp:Menu>
+            <p>This is the home page content.</p>
+        </div>
+    </form>
+</body>
+</html>

@@ -1,0 +1,24 @@
+using System;
+
+class Program
+{
+    static void Main()
+    {
+        Console.Write("Enter a single alphabet: ");
+        char ch = Convert.ToChar(Console.ReadLine());
+
+        switch (char.ToLower(ch))
+        {
+            case 'a':
+            case 'e':
+            case 'i':
+            case 'o':
+            case 'u':
+                Console.WriteLine("It's a vowel.");
+                break;
+            default:
+                Console.WriteLine("It's not a vowel.");
+                break;
+        }
+    }
+}

@@ -1,0 +1,84 @@
+html
+
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Registration.aspx.cs" Inherits="YourNamespace.Registration" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title>Registration</title>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <div>
+            <h2>User Registration</h2>
+            <div>
+                <label for="txtUsername">Username:</label>
+                <asp:TextBox ID="txtUsername" runat="server"></asp:TextBox>
+            </div>
+            <div>
+                <label for="txtPassword">Password:</label>
+                <asp:TextBox ID="txtPassword" runat="server" TextMode="Password"></asp:TextBox>
+            </div>
+            <div>
+                <asp:Button ID="btnRegister" runat="server" Text="Register" OnClick="btnRegister_Click" />
+            </div>
+        </div>
+    </form>
+</body>
+</html>
+
+cs
+
+using System;
+using System.Data.SqlClient;
+
+namespace YourNamespace
+{
+    public partial class Registration : System.Web.UI.Page
+    {
+        protected void btnRegister_Click(object sender, EventArgs e)
+        {
+            string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["YourConnectionString"].ConnectionString;
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    connection.Open();
+
+                    string username = txtUsername.Text.Trim();
+                    string password = txtPassword.Text;
+
+                    // Check if the username already exists
+                    using (SqlCommand checkCommand = new SqlCommand("SELECT COUNT(*) FROM Users WHERE Username = @Username", connection))
+                    {
+                        checkCommand.Parameters.AddWithValue("@Username", username);
+                        int count = Convert.ToInt32(checkCommand.ExecuteScalar());
+
+                        if (count > 0)
+                        {
+                            // Username already exists
+                            Response.Write("<script>alert('Username already exists. Choose a different username.');</script>");
+                            return;
+                        }
+                    }
+
+                    // Insert the new user
+                    using (SqlCommand insertCommand = new SqlCommand("INSERT INTO Users (Username, Password) VALUES (@Username, @Password)", connection))
+                    {
+                        insertCommand.Parameters.AddWithValue("@Username", username);
+                        insertCommand.Parameters.AddWithValue("@Password", password);
+                        insertCommand.ExecuteNonQuery();
+
+                        Response.Write("<script>alert('Registration successful.');</script>");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Response.Write($"<script>alert('Error: {ex.Message}');</script>");
+                }
+            }
+        }
+    }
+}
