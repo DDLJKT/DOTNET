@@ -1,0 +1,97 @@
+*Design the Form:
+Design your form with the following controls:
+Label: lblName, lblPassword, lblConfirmPassword, lblAge, lblEmail, lblUserId (for labels)
+TextBox: txtName, txtPassword, txtConfirmPassword, txtAge, txtEmail, txtUserId (for user input)
+Button: btnSubmit (to submit the information) *
+
+*Set Control IDs and Properties:
+Ensure to set the Name property of each control to the mentioned names (e.g., lblName, txtName, btnSubmit, etc.).*
+
+forms1.cs
+
+using System;
+using System.Text.RegularExpressions;
+using System.Windows.Forms;
+
+namespace UserInformationApp
+{
+    public partial class MainForm : Form
+    {
+        public MainForm()
+        {
+            InitializeComponent();
+        }
+
+        private void btnSubmit_Click(object sender, EventArgs e)
+        {
+            // Validate and process user information
+            if (ValidateInputs())
+            {
+                // Process the information (you can save it or perform other actions)
+                MessageBox.Show("Information submitted successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+
+        private bool ValidateInputs()
+        {
+            // Validate name
+            if (string.IsNullOrWhiteSpace(txtName.Text))
+            {
+                MessageBox.Show("Please enter a valid name.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+
+            // Validate password
+            if (string.IsNullOrWhiteSpace(txtPassword.Text) || txtPassword.Text.Length < 6)
+            {
+                MessageBox.Show("Password should be at least 6 characters long.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+
+            // Confirm password
+            if (txtPassword.Text != txtConfirmPassword.Text)
+            {
+                MessageBox.Show("Passwords do not match.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+
+            // Validate age (within 21 to 30)
+            if (!int.TryParse(txtAge.Text, out int age) || age < 21 || age > 30)
+            {
+                MessageBox.Show("Please enter a valid age between 21 and 30.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+
+            // Validate email
+            if (!IsValidEmail(txtEmail.Text))
+            {
+                MessageBox.Show("Please enter a valid email address.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+
+            // Validate user id
+            if (!IsValidUserId(txtUserId.Text))
+            {
+                MessageBox.Show("Please enter a valid user id with at least one capital letter, one digit, and length between 7 and 20 characters.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+
+            // All validations passed
+            return true;
+        }
+
+        private bool IsValidEmail(string email)
+        {
+            // A simple email validation using Regex
+            string emailPattern = @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$";
+            return Regex.IsMatch(email, emailPattern);
+        }
+
+        private bool IsValidUserId(string userId)
+        {
+            // Validate user id with at least one capital letter, one digit, and length between 7 and 20 characters
+            string userIdPattern = @"^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{7,20}$";
+            return Regex.IsMatch(userId, userIdPattern);
+        }
+    }
+}

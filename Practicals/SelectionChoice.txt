@@ -1,0 +1,59 @@
+*Design the Form:
+Design your form with the following controls:
+Label: lblQuestion (to display the question)
+RadioButton: radioGood, radioSatisfactory, radioBad (for the user's choices)
+Button: btnVote (to submit the vote)
+Label: lblResultGood, lblResultSatisfactory, lblResultBad (to display the results in percentages)*
+
+*Set Control IDs and Properties:
+Ensure to set the Name property of each control to the mentioned names (e.g., lblQuestion, radioGood, radioSatisfactory, radioBad, btnVote, lblResultGood, lblResultSatisfactory, lblResultBad).*
+
+*form1.cs*
+
+using System;
+using System.Windows.Forms;
+
+namespace BookRatingApp
+{
+    public partial class MainForm : Form
+    {
+        private int goodVotes = 0;
+        private int satisfactoryVotes = 0;
+        private int badVotes = 0;
+
+        public MainForm()
+        {
+            InitializeComponent();
+            lblQuestion.Text = "How is the book 'ASP.NET with C# by Wrox'?";
+        }
+
+        private void btnVote_Click(object sender, EventArgs e)
+        {
+            // Determine the selected choice
+            if (radioGood.Checked)
+                goodVotes++;
+            else if (radioSatisfactory.Checked)
+                satisfactoryVotes++;
+            else if (radioBad.Checked)
+                badVotes++;
+
+            // Update the result labels with percentages
+            UpdateResultLabels();
+        }
+
+        private void UpdateResultLabels()
+        {
+            int totalVotes = goodVotes + satisfactoryVotes + badVotes;
+
+            // Calculate percentages
+            double goodPercentage = (double)goodVotes / totalVotes * 100;
+            double satisfactoryPercentage = (double)satisfactoryVotes / totalVotes * 100;
+            double badPercentage = (double)badVotes / totalVotes * 100;
+
+            // Display percentages in labels
+            lblResultGood.Text = $"Good: {goodPercentage:F2}%";
+            lblResultSatisfactory.Text = $"Satisfactory: {satisfactoryPercentage:F2}%";
+            lblResultBad.Text = $"Bad: {badPercentage:F2}%";
+        }
+    }
+}

@@ -1,0 +1,32 @@
+using System;
+
+// Base class
+class Animal
+{
+    public void Eat()
+    {
+        Console.WriteLine("Eating...");
+    }
+}
+
+// Derived class inheriting from Animal
+class Dog : Animal
+{
+    public void Bark()
+    {
+        Console.WriteLine("Barking...");
+    }
+}
+
+class Program
+{
+    static void Main()
+    {
+        // Creating an object of the derived class
+        Dog myDog = new Dog();
+
+        // Accessing methods from both base and derived classes
+        myDog.Eat();
+        myDog.Bark();
+    }
+}
